@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 This module contains the pascal_triangle(n) function
 """
