@@ -37,3 +37,6 @@ except KeyboardInterrupt:
     for key, val in status_codes.items():
         if val > 0:
             print("{}: {}".format(int(key), val))
+
+except Exception:
+    raise
