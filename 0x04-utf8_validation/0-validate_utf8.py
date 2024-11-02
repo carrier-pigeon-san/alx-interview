@@ -5,14 +5,13 @@
 def checkMultiByte(byte):
     """Checks number of bytes in a multi-byte UTF-8 character"""
     mask = 15
-    shifted_value = byte >> 4
-    bitwiseAND = shifted_value & mask
+    shift = byte >> 4
 
-    if bitwiseAND == 12:
+    if shift & 12 == 12:
         return 2
-    if bitwiseAND == 14:
+    if shift & 14 == 14:
         return 3
-    if bitwiseAND == 15:
+    if shift & 15 == 15:
         return 4
     return 0
 
@@ -30,13 +29,16 @@ def evaluateMultiByte(data, start, bytes):
 
 def validUTF8(data):
     """Validates UTF-8 encoding"""
-    for i in range(len(data)):
-        data_8LSB = data[i] & 255
-        if data_8LSB > 127:
-            bytes = checkMultiByte(data_8LSB)
-            if bytes == 0:
+    i = 0
+    while i < len(data):
+        byte = data[i] & 0xFF  # Mask to get the 8 least significant bits
+        if byte > 127:
+            bytes_needed = checkMultiByte(byte)
+            if bytes_needed == 0:
                 return False
-            if not evaluateMultiByte(data, i + 1, bytes - 1):
+            if not evaluateMultiByte(data, i + 1, bytes_needed - 1):
                 return False
-            i += bytes
+            i += bytes_needed
+        else:
+            i += 1
     return True
