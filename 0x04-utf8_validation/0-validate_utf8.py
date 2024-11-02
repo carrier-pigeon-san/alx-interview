@@ -31,14 +31,12 @@ def evaluateMultiByte(data, start, bytes):
 def validUTF8(data):
     """Validates UTF-8 encoding"""
     for i in range(len(data)):
-        if data[i] > 255:
-            return False
-        if data[i] > 127:
-            bytes = checkMultiByte(data[i])
+        data_8LSB = data[i] & 255
+        if data_8LSB > 127:
+            bytes = checkMultiByte(data_8LSB)
             if bytes == 0:
                 return False
             if not evaluateMultiByte(data, i + 1, bytes - 1):
                 return False
             i += bytes
     return True
-         
