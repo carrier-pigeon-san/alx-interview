@@ -11,7 +11,7 @@ request.get(url, { json: true }, async (err, res, body) => {
   }
 
   if (res.statusCode === 200) {
-    for (character of body.characters) {
+    for (const character of body.characters) {
       const response = await new Promise((resolve, reject) => {
         request.get(character, { json: true }, (err, res, body) => {
           if (err) {
