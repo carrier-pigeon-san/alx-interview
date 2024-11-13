@@ -11,16 +11,16 @@ request.get(url, { json: true }, async (err, res, body) => {
   }
 
   if (res.statusCode === 200) {
-    body.characters.forEach(async (character) => {
+    for (character of body.characters) {
       const response = await new Promise((resolve, reject) => {
         request.get(character, { json: true }, (err, res, body) => {
           if (err) {
-            reject(err);
+            return reject(err);
           }
           resolve(body);
         });
       });
       console.log(response.name);
-    });
+    }
   }
 });
